@@ -1,0 +1,14 @@
+Zion is a script to build a distribution based on the Linux From Scratch
+book available at http://www.linuxfromscratch.org
+
+Note: Most commands are commented as I test things out. If you want to try
+it out, make sure you uncomment the function calls in paths.sh
+
+To generate:
+
+    $ ./paths.sh <folder>
+
+The script currently ends by sticking you in a chroot environment. Once in
+there, run the postchroot.sh script:
+
+    $ ./postchroot.sh
