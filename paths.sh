@@ -537,9 +537,9 @@ function install_perl()
 	patch -Np1 -i ../perl-5.14.2-libc-1.patch
 	sh Configure -des -Dprefix=$ZION/tools
 	make
-	cp -v perl cpan/podlators/pod2man /tools/bin
-	mkdir -pv /tools/lib/perl5/5.14.2
-	cp -Rv lib/* /tools/lib/perl5/5.14.2
+	cp -v perl cpan/podlators/pod2man $ZION/tools/bin
+	mkdir -pv $ZION/tools/lib/perl5/5.14.2
+	cp -Rv lib/* $ZION/tools/lib/perl5/5.14.2
 	cd $ZION
 }
 
@@ -648,10 +648,10 @@ function make_folders()
 	sudo mknod -m 666 $ZION/dev/null c 1 3
 	sudo mount -v --bind /dev $ZION/dev
 	sudo mount -v --bind $ZION/tools $ZION/$ZION/tools
-	mount -vt devpts devpts $ZION/dev/ptst
-	mount -vt tmpfs shm $ZION/dev/shm
-	mount -vt proc proc $ZION/proc
-	mount -vt sysfs sysfs $ZION/sys
+	sudo mount -vt devpts devpts $ZION/dev/pts
+	sudo mount -vt tmpfs shm $ZION/dev/shm
+	sudo mount -vt proc proc $ZION/proc
+	sudo mount -vt sysfs sysfs $ZION/sys
 }
 
 function do_chroot()
