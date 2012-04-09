@@ -3,7 +3,7 @@
 echo "Installing Packages"
 
 ZION_SRC=/sources
-MAKEFLAGS="-j4"
+#MAKEFLAGS="-j4"
 
 function install_kernel_headers()
 {
@@ -25,8 +25,8 @@ function install_man_pages()
 {
 	cd $ZION_SRC
 	echo "Extracting man pages"
-	tar -xf man-db-2.6.1.tar.gz
-	cd man-db-2.6.1
+	tar -xf man-pages-3.35.tar.gz
+	cd man-pages-3.35
 	make install
 	cd $ZION
 }
@@ -148,12 +148,6 @@ function sanity_check()
 }
 
 
-#install_kernel_headers
-#install_man_pages
-#install_glibc
-#adjust_toolchain
-#sanity_check
-
 function install_generic()
 {
 	cd $ZION_SRC
@@ -207,8 +201,8 @@ function install_gmp()
 	rm -rf gmp-5.0.4
 	tar -xf gmp-5.0.4.tar.xz
 	cd gmp-5.0.4
-	#ABI=32 ./configure --prefix=/usr --enable-cxx --enable-mpbsd
-	./configure --prefix=/usr --enable-cxx --enable-mpbsd
+	ABI=32 ./configure --prefix=/usr --enable-cxx --enable-mpbsd
+	#./configure --prefix=/usr --enable-cxx --enable-mpbsd
 	if [ "$?" -ne "0" ]; then
 		"Configuring GMP failed"
 		exit 1
@@ -286,9 +280,16 @@ function install_gcc()
 	cd $ZION
 }
 
-#install_zlib
-#install_generic "file-5.10" "file-5.10.tar.gz"
-#install_binutils
+
+install_kernel_headers
+install_man_pages
+install_glibc
+adjust_toolchain
+sanity_check
+
+install_zlib
+install_generic "file-5.10" "file-5.10.tar.gz"
+install_binutils
 install_gmp
 install_mpfr
 install_generic "mpc-0.9" "mpc-0.9.tar.gz"

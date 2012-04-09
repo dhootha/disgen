@@ -63,9 +63,9 @@ EOF
 	chgrp -v utmp /var/run/utmp /var/log/lastlog
 	chmod -v 664 /var/run/utmp /var/log/lastlog
 	chmod -v 600 /var/log/btmp
-
-	exec $ZION/tools/bin/bash --login +h
 }
 
 #create_directories
-create_symlinks
+#create_symlinks
+
+exec $ZION/tools/bin/bash --login +h

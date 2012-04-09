@@ -25,7 +25,11 @@ function zion_get_sources()
 	# Get wget-list
 	# wget -i wget-list
 	# rm -rf wget_list
-	cp /home/mvanga/src/lfs/*.patch /home/mvanga/src/lfs/*[z2] .
+	#cp /home/mvanga/src/lfs/*.patch /home/mvanga/src/lfs/*[z2] .
+	wget -c ftp://ftp.lfs-matrix.net/pub/lfs/lfs-packages/lfs-packages-7.1.tar
+	tar -xf lfs-packages-7.1.tar
+	mv 7.1/* .
+	rm -rf 7.1
 	cd $ZION
 }
 
@@ -38,7 +42,7 @@ function setup_env()
 	export ZION_TGT=$(uname -m)-zion-linux-gnu
 	PATH=$ZION_TOOLS/bin:/bin:/usr/bin
 	export ZION LC_ALL ZION_TGT PATH
-	export MAKEFLAGS="-j4"
+	#export MAKEFLAGS="-j4"
 #	env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash -norc
 }
 
@@ -257,33 +261,6 @@ function step_gcc_pass2()
 
 	cd $ZION
 }
-
-if [[ "$#" -ne "1" ]] ; then
-	zion_usage;
-fi
-
-export ZION="`pwd`/$1";
-make_dir $ZION
-echo "Setup working directory: $ZION"
-export ZION_TOOLS=$ZION/tools
-make_dir $ZION_TOOLS
-echo "Setup tools directory: $ZION_TOOLS"
-export ZION_SRC=$ZION/sources
-make_dir $ZION_SRC
-echo "Setup sources directory: $ZION_SRC"
-cd $ZION
-
-# zion_get_sources
-setup_env
-#step_binutils_pass1
-#step_gcc_pass1
-#step_kernel_headers
-#step_glibc_pass1
-#adjust_paths
-#sanity_check_pass1
-#step_binutils_pass2
-#step_gcc_pass2
-#sanity_check_pass1
 
 function install_tcl()
 {
@@ -604,30 +581,6 @@ function install_tcl_stub()
 	cd $ZION
 }
 
-#install_tcl
-#install_expect
-#install_dejagnu
-#install_check
-#install_ncurses
-#install_bash
-#install_bzip2
-#install_coreutils
-#install_diffutils
-#install_file
-#install_findutils
-#install_gawk
-#install_gettext
-#install_grep
-#install_gzip
-#install_m4
-#install_make
-#install_patch
-#install_perl
-#install_sed
-#install_tar
-#install_texinfo
-#install_xz
-
 function step_cleanup()
 {
 	strip --strip-debug $ZION/tools/lib/*
@@ -667,7 +620,61 @@ function do_chroot()
 		$ZION/tools/bin/bash --login +h
 }
 
+if [[ "$#" -ne "1" ]] ; then
+	zion_usage;
+fi
+
+export ZION="`pwd`/$1";
+make_dir $ZION
+echo "Setup working directory: $ZION"
+export ZION_TOOLS=$ZION/tools
+make_dir $ZION_TOOLS
+echo "Setup tools directory: $ZION_TOOLS"
+export ZION_SRC=$ZION/sources
+make_dir $ZION_SRC
+echo "Setup sources directory: $ZION_SRC"
+cd $ZION
+
+#zion_get_sources
+setup_env
+
+# Build our temporary system
+#step_binutils_pass1
+#step_gcc_pass1
+#step_kernel_headers
+#step_glibc_pass1
+#adjust_paths
+#sanity_check_pass1
+#step_binutils_pass2
+#step_gcc_pass2
+#sanity_check_pass1
+## Install packages for the temporary system
+#install_tcl
+#install_expect
+#install_dejagnu
+#install_check
+#install_ncurses
+#install_bash
+#install_bzip2
+#install_coreutils
+#install_diffutils
+#install_file
+#install_findutils
+#install_gawk
+#install_gettext
+#install_grep
+#install_gzip
+#install_m4
+#install_make
+#install_patch
+#install_perl
+#install_sed
+#install_tar
+#install_texinfo
+#install_xz
+## Final steps before getting into the chroot environment
 #step_cleanup
 #fix_ownership
-make_folders
+#make_folders
+# Get into the chroot environment
 do_chroot
