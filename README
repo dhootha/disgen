@@ -2,9 +2,13 @@ Zion is a script to build a distribution based on the Linux From Scratch
 book available at http://www.linuxfromscratch.org
 
 Note: Most commands are commented as I test things out. If you want to try
-it out, make sure you uncomment the function calls in paths.sh
+it out, make sure you uncomment the function calls in paths.sh and packages.sh
 
-To generate:
+First enter a clean shell by running env.sh:
+
+    $ ./env.sh
+
+Now to generate the temporary tools, run:
 
     $ ./paths.sh <folder>
 
@@ -12,3 +16,14 @@ The script currently ends by sticking you in a chroot environment. Once in
 there, run the postchroot.sh script:
 
     $ ./postchroot.sh
+
+This should drop you into a named shell (bash-4.2$). Now just run packages.sh
+within this shell:
+
+    $ ./packages.sh
+
+That's it! The folder you specified should contain the filesystem image for
+your LFS system.
+
+Note that the packages.sh file is still incomplete and only works till section
+6.17 in the LFS 7.1 book.
